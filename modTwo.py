@@ -10,17 +10,30 @@ class Character:
         # self.attacking = attack_power
 
     def attack(self, opponent):
-        # for i in range(0,20):
-        self.attack_power = random.randrange(20)
-        opponent.health -= self.attack_power
-        print(f"{self.name} attacks {opponent.name} for {self.attack_power} damage!")
-        if opponent.health <= 0:
-            print(f"{opponent.name} has been defeated!")
+        # if Character.sp(self):
+        #     self.attack_power = 0
+        #     return Character.spesh_two
+        # else:
+            opponent.health -= self.attack_power
+            print(f"{self.name} attacks {opponent.name} for {self.attack_power} damage!")
+            if opponent.health <= 0:
+                print(f"{opponent.name} has been defeated!")
     def spesh(self, opponent):
+        self.spesh_attack = 20
         opponent.health -= self.spesh_attack
-        print(f"{self.name} uses special ability for {self.spesh_attack} damage")
-        if opponent.health <= 0:
+        #print(f"{self.name} uses special ability for {self.spesh_attack} damage")
+        if isinstance(self,Warrior):
+            print(f"{self.name} uses a flying sword for {self.spesh_attack} damage")  
+            
+        if isinstance(self,Mage):
+            print(f"{self.name} uses whirlwind kick for {self.spesh_attack} damage") 
+        if isinstance(self,Giant):
+            print(f"{self.name} uses crushing attack for {self.spesh_attack} damage")
+        if isinstance(self,Reptile):
+            print(f"{self.name} uses acid bomb for {self.spesh_attack} damage")
+        elif opponent.health <= 0:
             print(f"{opponent.name} has been defeated!")
+
 
     def display_stats(self):
         print(f"{self.name}'s Stats - Health: {self.health}/{self.max_health}, Attack Power: {self.attack_power}")
@@ -32,6 +45,9 @@ class Character:
             self.health = self.health + x
             
         print(f"You have been restored to {self.health} health.")
+    
+    def sp(self):
+        EvilWizard.no_hit(self)
 
 
 # Warrior class (inherits from Character)
@@ -42,13 +58,27 @@ class Warrior(Character):
         
 
     # Add your power attack method here
-
-
+    def spesh_two():
+        Character.sp()
+        evade = 0
+        print(f"{self.name} uses Evade for {evade} damage")  
+    
+    # def spesh_one(self,opponent):
+    #     self.spesh_attack = 20
+    #     Character.spesh(opponent)
+    #     print(f"{self.name} uses flying sword for {self.spesh_attack} damage")
+             
+                
 # Mage class (inherits from Character)
 class Mage(Character):
     def __init__(self, name):
         attacking = random.randrange(35)
         super().__init__(name, health=100, attack_power=attacking)  # Boost attack power
+    
+    def spesh_two(self):
+        Character.sp(self)
+        evade = 0
+        print(f"{self.name} uses Sheild for {evade} damage")
 
     # Add your cast spell method here
 # Giant class (Inherits from Character)
@@ -56,15 +86,21 @@ class Giant(Character):
     def __init__(self, name):
         attacking = random.randrange(55)
         super().__init__(name, health=150, attack_power=attacking)
-    def special(self):
-        self.attack_power = 65
-        print(f"{self.name} gives a Holy Strike for {self.attack_power} damage!")
+ 
+    def spesh_two(self):
+        Character.sp(self)
+        evade = 0
+        print(f"{self.name} turns to Rock for {evade} damage")
         
-
 class Reptile(Character):
     def __init__(self, name):
         attacking = random.randrange(40)
         super().__init__(name, health=135, attack_power=attacking)
+    
+    def spesh_two(self):
+        Character.sp(self)
+        evade = 0
+        print(f"{self.name} uses Reptilian Slide for {evade} damage")
 
 
 # EvilWizard class (inherits from Character)
@@ -72,7 +108,9 @@ class EvilWizard(Character):
     def __init__(self, name):
         attacking = random.randrange(15)
         super().__init__(name, health=150, attack_power=attacking)  # Lower attack power
-        
+    
+    def no_hit(self):
+        self.attack_power = 0
     
     # Evil Wizard's special ability: it can regenerate health
     def regenerate(self):
@@ -120,7 +158,13 @@ def battle(player, wizard):
         if choice == '1':
             player.attack(wizard)
         elif choice == '2':
-            player.spesh(wizard)
+            prompt = 'Special attack One or two'
+            prompt += '\nEnter "1" or "2": '
+            choose = input(prompt)
+            if choose == '1':
+                player.spesh(wizard)
+            if choose == '2':
+                player.spesh_two()
            
         elif choice == '3':
             # Call the heal method here
