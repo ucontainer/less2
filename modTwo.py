@@ -14,17 +14,17 @@ class Character:
         #     self.attack_power = 0
         #     return Character.spesh_two
         # else:
-            opponent.health -= self.attack_power
+            opponent.health -= self.attack_power     
             print(f"{self.name} attacks {opponent.name} for {self.attack_power} damage!")
             if opponent.health <= 0:
                 print(f"{opponent.name} has been defeated!")
+    """Special attack string where special ability is used. User presses 1 after selecting 'Use Special Ability'."""
     def spesh(self, opponent):
         self.spesh_attack = 20
         opponent.health -= self.spesh_attack
         #print(f"{self.name} uses special ability for {self.spesh_attack} damage")
         if isinstance(self,Warrior):
-            print(f"{self.name} uses a flying sword for {self.spesh_attack} damage")  
-            
+            print(f"{self.name} uses a flying sword for {self.spesh_attack} damage")    
         if isinstance(self,Mage):
             print(f"{self.name} uses whirlwind kick for {self.spesh_attack} damage") 
         if isinstance(self,Giant):
@@ -46,6 +46,7 @@ class Character:
             
         print(f"You have been restored to {self.health} health.")
     
+    """Method used to call no.hit() so that spesh_two() can be used to evade an attack for 0 damage."""
     def sp(self):
         EvilWizard.no_hit(self)
 
@@ -58,8 +59,8 @@ class Warrior(Character):
         
 
     # Add your power attack method here
-    def spesh_two():
-        Character.sp()
+    def spesh_two(self):
+        Character.sp(self)
         evade = 0
         print(f"{self.name} uses Evade for {evade} damage")  
     
@@ -108,6 +109,14 @@ class EvilWizard(Character):
     def __init__(self, name):
         attacking = random.randrange(15)
         super().__init__(name, health=150, attack_power=attacking)  # Lower attack power
+    
+    def attack(self, opponent):
+        # opponent.health -= self.attack_power  
+        self.attack_power = random.randrange(35)  
+        opponent.health -= self.attack_power  
+        print(f"{self.name} attacks {opponent.name} for {self.attack_power} damage!")
+        if opponent.health <= 0:
+            print(f"{opponent.name} has been defeated!")
     
     def no_hit(self):
         self.attack_power = 0
